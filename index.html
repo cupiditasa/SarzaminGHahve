@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#100b08" />
+    <title>سرزمین قهوه | طعمی برای فردا</title>
+    <link rel="icon" href="assets/logo.webp" type="image/webp" />
+    <link rel="preload" href="assets/coffee-background.png" as="image" fetchpriority="high" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page-noise"></div>
+    <main>
+      <section class="hero" id="home">
+        <div class="hero-photo" aria-hidden="true"></div>
+        <video class="hero-video" id="heroVideoA" data-src="assets/hero-background.mp4" poster="assets/coffee-background.png" preload="none" muted playsinline aria-hidden="true" tabindex="-1"></video>
+        <video class="hero-video" id="heroVideoB" data-src="assets/hero-background.mp4" poster="assets/coffee-background.png" preload="none" muted playsinline aria-hidden="true" tabindex="-1"></video>
+        <div class="hero-wash" aria-hidden="true"></div>
+
+        <header class="site-header">
+          <a class="brand" href="#home" aria-label="سرزمین قهوه">
+            <img class="logo-image" src="assets/logo.webp" alt="سرزمین قهوه" />
+            <span class="brand-copy"><b>سرزمین قهوه</b><small>طَعمی برای فردا</small></span>
+          </a>
+          <nav class="desktop-nav" aria-label="ناوبری اصلی">
+            <a class="active" href="#home">خانه</a>
+            <a href="#story">داستان ما</a>
+            <a href="#blends">ترکیب‌ها</a>
+            <a href="#experience">تجربه</a>
+            <a href="#journal">مجله</a>
+          </nav>
+          <div class="header-actions">
+            <button class="icon-button search-button" aria-label="جستجو"><i data-lucide="search"></i></button>
+            <span class="header-divider"></span>
+            <button class="favorites-button" id="headerFavorite"><span>علاقه‌مندی‌ها</span><i data-lucide="heart"></i><em id="favoriteCount">۰</em></button>
+            <button class="icon-button hero-motion-toggle" id="heroMotionToggle" type="button" aria-label="پخش ویدیوی پس‌زمینه" title="پخش ویدیوی پس‌زمینه" hidden>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><g class="motion-pause"><path d="M8 5v14M16 5v14" /></g><path class="motion-play" d="m8 5 11 7-11 7Z" /></svg>
+            </button>
+            <button class="icon-button menu-button" id="menuButton" aria-label="باز کردن منو"><i data-lucide="menu"></i></button>
+          </div>
+        </header>
+
+        <div class="mobile-menu" id="mobileMenu">
+          <a href="#home">خانه</a><a href="#story">داستان ما</a><a href="#blends">ترکیب‌ها</a><a href="#experience">تجربه</a><a href="#journal">مجله</a>
+        </div>
+
+        <div class="hero-layout">
+          <div class="hero-copy reveal">
+            <p class="eyebrow">فراتر از یک فنجان قهوه</p>
+            <h1><span>دنیای</span><span>غنی‌تر</span></h1>
+            <p class="hero-description">از مزارع کوهستانی تا فنجان شما، سرزمین قهوه بهترین دانه‌ها را برای فردایی خوش‌طعم‌تر گرد هم می‌آورد.</p>
+            <a href="#story" class="story-link"><span class="play"><i data-lucide="play"></i></span><span>داستان ما را ببینید</span></a>
+            <div class="hero-pagination" aria-label="اسلایدهای معرفی">
+              <button class="current">۰۱</button><button>۰۲</button><button>۰۳</button>
+            </div>
+            <p class="hero-tagline">آدم‌ها، دانه‌ها، فردایی روشن‌تر</p>
+          </div>
+
+          <aside class="blend-panel reveal" id="blends" aria-labelledby="blendTitle">
+            <div class="panel-heading"><div><span class="panel-kicker">ترکیب اختصاصی شما</span><h2 id="blendTitle">ترکیب خودت را بساز</h2></div><span class="slide-count">۰۱ / ۰۳</span></div>
+            <p class="panel-intro">تعادل دلخواهت را انتخاب کن؛ ما دانه‌ها را برای همان لحظه برشته می‌کنیم.</p>
+
+            <div class="control-group">
+              <div class="control-title"><span class="round-icon"><i data-lucide="coffee"></i></span><strong>عربیکا / روبوستا</strong><output id="beanOutput">۷۰٪ / ۳۰٪</output></div>
+              <input id="beanRange" type="range" min="0" max="100" value="70" aria-label="نسبت عربیکا به روبوستا" />
+              <div class="range-labels"><span>عربیکا <small>نرم و معطر</small></span><span>روبوستا <small>پرقدرت و عمیق</small></span></div>
+            </div>
+
+            <div class="control-group roast-group">
+              <div class="control-title"><span class="round-icon"><i data-lucide="flame"></i></span><strong>درجه برشتگی</strong><output id="roastOutput">متوسط</output></div>
+              <input id="roastRange" type="range" min="0" max="2" value="1" step="1" aria-label="درجه برشتگی" />
+              <div class="roast-labels"><span>روشن<small>میوه‌ای</small></span><span class="selected">متوسط<small>متعادل</small></span><span>تیره<small>جسور</small></span></div>
+            </div>
+
+            <div class="notes-section">
+              <div class="notes-heading"><strong>نت‌های طعمی</strong><span id="notesSummary">شکلات، کارامل، فندق</span></div>
+              <div class="notes-grid" id="notesGrid">
+                <button class="note selected" data-note="شکلات"><i data-lucide="candy"></i><span>شکلات</span></button>
+                <button class="note selected" data-note="کارامل"><i data-lucide="package"></i><span>کارامل</span></button>
+                <button class="note selected" data-note="آجیل"><i data-lucide="nut"></i><span>آجیل</span></button>
+              </div>
+            </div>
+            <button class="save-button" id="saveBlend"><span>ذخیره در علاقه‌مندی‌ها</span><i data-lucide="heart"></i></button>
+          </aside>
+        </div>
+
+        <div class="value-bar">
+          <div class="value"><span><i data-lucide="leaf"></i></span><p><b>مسئولانه تهیه شده</b><small>برای زمینی سالم‌تر</small></p></div>
+          <div class="value"><span><i data-lucide="handshake"></i></span><p><b>با هدف برشته می‌شود</b><small>برای جوامعی توانمندتر</small></p></div>
+          <div class="value"><span><i data-lucide="globe-2"></i></span><p><b>فردایی روشن‌تر</b><small>در هر فنجان</small></p></div>
+          <a class="scroll-link" href="#story"><span>برای کشف، اسکرول کنید</span><i data-lucide="arrow-down"></i></a>
+        </div>
+      </section>
+
+      <section class="story-section" id="story">
+        <div class="story-image"><img src="assets/coffee-hero.png" alt="قهوه تازه دم در نور گرم" /></div>
+        <div class="story-content">
+          <p class="eyebrow">راهی از ارتفاعات</p>
+          <h2>هر دانه، یک <em>سرزمین</em> است.</h2>
+          <p>با کشاورزان کوچک و مزرعه‌هایی که فصل‌ها را می‌شناسند همراهیم. دانه‌ها آهسته و دقیق انتخاب می‌شوند تا عطرِ خاستگاه‌شان در فنجان شما باقی بماند.</p>
+          <a class="text-link" href="#experience">بیشتر از مسیر ما بدانید <i data-lucide="arrow-up-left"></i></a>
+        </div>
+      </section>
+
+      <section class="collection-section" id="experience">
+        <div class="section-heading"><div><p class="eyebrow">انتخاب امروز</p><h2>ترکیب‌های <em>ماندگار</em></h2></div><p>سه شخصیت متفاوت، با یک وسواس مشترک برای کیفیت.</p></div>
+        <div class="blend-list">
+          <article class="blend-item"><span class="blend-number">۰۱</span><div><h3>سپیده‌دم</h3><p>عربیکای روشن با عطر مرکبات و عسل</p></div><span class="blend-meta">روشن / ۲۵۰ گرم</span><button class="add-blend" aria-label="افزودن سپیده‌دم"><i data-lucide="plus"></i></button></article>
+          <article class="blend-item"><span class="blend-number">۰۲</span><div><h3>کوهستان</h3><p>ترکیبی متعادل از شکلات تلخ و فندق</p></div><span class="blend-meta">متوسط / ۲۵۰ گرم</span><button class="add-blend" aria-label="افزودن کوهستان"><i data-lucide="plus"></i></button></article>
+          <article class="blend-item"><span class="blend-number">۰۳</span><div><h3>شب‌نشین</h3><p>روبوستای عمیق با پایان کاراملی</p></div><span class="blend-meta">تیره / ۲۵۰ گرم</span><button class="add-blend" aria-label="افزودن شب‌نشین"><i data-lucide="plus"></i></button></article>
+        </div>
+      </section>
+
+      <footer id="journal"><div class="brand footer-brand"><img class="logo-image" src="assets/logo.webp" alt="سرزمین قهوه" /><span class="brand-copy"><b>سرزمین قهوه</b><small>طَعمی برای فردا</small></span></div><p>قهوه‌ای با ریشه‌های عمیق و آینده‌ای روشن.</p><a href="#home">بازگشت به بالا <i data-lucide="arrow-up"></i></a></footer>
+    </main>
+    <div class="toast" id="toast" role="status"><i data-lucide="heart"></i><span>ترکیب شما به علاقه‌مندی‌ها اضافه شد.</span></div>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
