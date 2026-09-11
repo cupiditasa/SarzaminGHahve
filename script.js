@@ -1,107 +1,57 @@
-// Paint the existing photo first, then use two video layers to crossfade each loop.
-// This hides the hard jump from the last frame back to frame zero.
-const heroVideos = [document.querySelector('#heroVideoA'), document.querySelector('#heroVideoB')].filter(Boolean);
+// Paint the existing photo first, then fade in a pre-looped video.
+// The video itself crossfades its final second into the first frame, so the
+// native loop can restart without a visible jump or a second decoder.
+const heroVideo = document.querySelector('#heroVideo');
 const heroMotionToggle = document.querySelector('#heroMotionToggle');
-if (heroVideos.length && heroMotionToggle) {
+if (heroVideo && heroMotionToggle) {
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const crossfadeSeconds = 1.15;
-  let activeIndex = 0;
-  let transitioning = false;
   let videoStarted = false;
 
-  const activeVideo = () => heroVideos[activeIndex];
-  const setSource = (video) => {
-    if (!video.getAttribute('src')) {
-      video.src = video.dataset.src;
-      video.load();
+  const setSource = () => {
+    if (!heroVideo.getAttribute('src')) {
+      heroVideo.src = heroVideo.dataset.src;
+      heroVideo.load();
     }
   };
   const updateMotionButton = () => {
-    const playing = videoStarted && !activeVideo().paused && !activeVideo().ended;
+    const playing = videoStarted && !heroVideo.paused && !heroVideo.ended;
     const label = playing ? 'توقف ویدیوی پس‌زمینه' : 'پخش ویدیوی پس‌زمینه';
     heroMotionToggle.classList.toggle('is-playing', playing);
     heroMotionToggle.setAttribute('aria-label', label);
     heroMotionToggle.title = label;
   };
 
-  const playBackground = (video = activeVideo()) => {
-    video.muted = true;
-    setSource(video);
-    return video.play().catch(() => {
+  const playBackground = () => {
+    heroVideo.muted = true;
+    setSource();
+    return heroVideo.play().catch(() => {
       // Autoplay can be blocked; the image and manual play button remain usable.
       updateMotionButton();
     });
   };
 
-  const crossfadeToNext = () => {
-    if (transitioning) return;
-    const current = activeVideo();
-    const nextIndex = activeIndex === 0 ? 1 : 0;
-    const next = heroVideos[nextIndex];
-    if (!current.duration || !Number.isFinite(current.duration)) return;
-    transitioning = true;
-    setSource(next);
-    let startedNext = false;
-    const startNext = () => {
-      if (startedNext) return;
-      startedNext = true;
-      try { next.currentTime = 0; } catch { /* metadata may still be settling */ }
-      next.play().then(() => {
-        next.classList.add('is-visible');
-        window.setTimeout(() => {
-          current.pause();
-          try { current.currentTime = 0; } catch { /* ignore reset errors */ }
-          current.classList.remove('is-visible');
-          activeIndex = nextIndex;
-          transitioning = false;
-          updateMotionButton();
-        }, crossfadeSeconds * 1000);
-      }).catch(() => {
-        transitioning = false;
-        updateMotionButton();
-      });
-    };
-    if (next.readyState >= 1) startNext();
-    else next.addEventListener('loadedmetadata', startNext, { once: true });
-  };
-
-  heroVideos.forEach((video, index) => {
-    video.addEventListener('playing', () => {
-      if (index === activeIndex) {
-        videoStarted = true;
-        video.classList.add('is-visible');
-        // Warm the second decoder while the first loop is playing so the
-        // crossfade never waits for a cold network request at the loop edge.
-        const next = heroVideos[index === 0 ? 1 : 0];
-        if (next && !next.getAttribute('src')) setSource(next);
-      }
-      updateMotionButton();
-    });
-    video.addEventListener('timeupdate', () => {
-      if (index !== activeIndex || transitioning || !video.duration) return;
-      if (video.duration - video.currentTime <= crossfadeSeconds + 0.08) crossfadeToNext();
-    });
-    video.addEventListener('pause', updateMotionButton);
-    video.addEventListener('ended', () => {
-      // Fallback for browsers that do not fire timeupdate near the final frame.
-      if (index === activeIndex && !transitioning) crossfadeToNext();
-    });
-    video.addEventListener('error', () => {
-      video.classList.remove('is-visible');
-      if (index === activeIndex) heroMotionToggle.hidden = true;
-    });
+  heroVideo.addEventListener('playing', () => {
+    videoStarted = true;
+    heroVideo.classList.add('is-visible');
+    updateMotionButton();
+  });
+  heroVideo.addEventListener('pause', updateMotionButton);
+  heroVideo.addEventListener('ended', updateMotionButton);
+  heroVideo.addEventListener('error', () => {
+    heroVideo.classList.remove('is-visible');
+    heroMotionToggle.hidden = true;
   });
 
   heroMotionToggle.addEventListener('click', () => {
-    if (activeVideo().paused) playBackground();
-    else heroVideos.forEach((video) => video.pause());
+    if (heroVideo.paused) playBackground();
+    else heroVideo.pause();
   });
   reducedMotion.addEventListener('change', (event) => {
-    if (event.matches) heroVideos.forEach((video) => video.pause());
+    if (event.matches) heroVideo.pause();
   });
 
   const poster = new Image();
-  poster.src = heroVideos[0].poster;
+  poster.src = heroVideo.poster;
   poster.decode().catch(() => {}).then(() => {
     requestAnimationFrame(() => requestAnimationFrame(() => {
       heroMotionToggle.hidden = false;
