@@ -1,0 +1,16 @@
+{
+	"name": "sarzamin-visit-counter",
+	"main": "src/index.js",
+	"compatibility_date": "2026-10-25",
+	"workers_dev": true,
+	"observability": {
+		"enabled": true
+	},
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "sarzamin-visits",
+			"database_id": "9e5de3c6-3d91-4e23-8279-bb7987b8e777"
+		}
+	]
+}

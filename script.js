@@ -124,4 +124,41 @@ document.querySelectorAll('.hero-pagination button').forEach((button) => button.
 updateBeanRange();
 updateRoastRange();
 updateNotes();
-lucide.createIcons();
+window.lucide?.createIcons();
+
+// Count one visit per browser tab session. The Worker stores only an aggregate total.
+const visitCounter = document.querySelector('[data-visit-counter]');
+const visitTotal = document.querySelector('[data-visit-total]');
+const visitEndpoint = 'https://sarzamin-visit-counter.cupiditasa.workers.dev/api/visits';
+
+async function updateVisitCounter() {
+  if (!visitCounter || !visitTotal) return;
+
+  let countedInThisTab = false;
+  try {
+    countedInThisTab = sessionStorage.getItem('sarzamin-visit-counted') === '1';
+  } catch {}
+
+  try {
+    const response = await fetch(visitEndpoint, {
+      method: countedInThisTab ? 'GET' : 'POST',
+      cache: 'no-store'
+    });
+    if (!response.ok) return;
+
+    const data = await response.json();
+    if (!Number.isSafeInteger(data.total) || data.total < 0) return;
+
+    visitTotal.textContent = data.total.toLocaleString('fa-IR');
+    visitCounter.hidden = false;
+    if (!countedInThisTab) {
+      try {
+        sessionStorage.setItem('sarzamin-visit-counted', '1');
+      } catch {}
+    }
+  } catch {
+    // Keep the counter hidden when the cloud service is unavailable.
+  }
+}
+
+updateVisitCounter();

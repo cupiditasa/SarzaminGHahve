@@ -120,3 +120,12 @@ footer { direction:rtl; background:#100906; color:#c7aa90; display:flex; align-i
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior:auto !important; animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; }
 }
+
+/* Live visit counter */
+footer .visit-counter { display:inline-flex; align-items:center; gap:8px; color:#8e7664; font-size:11px; white-space:nowrap; }
+footer .visit-counter svg { width:16px; height:16px; color:var(--gold); }
+footer .visit-counter[hidden] { display:none; }
+@media (max-width:760px) {
+  footer { flex-wrap:wrap; row-gap:14px; }
+  footer .visit-counter { order:3; flex:0 0 100%; justify-content:center; }
+}

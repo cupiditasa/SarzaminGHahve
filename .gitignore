@@ -2,3 +2,4 @@
 .playwright-cli/
 output/
 s.src)
+.wrangler/
